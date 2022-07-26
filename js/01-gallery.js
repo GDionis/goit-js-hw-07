@@ -30,23 +30,24 @@ function clickImg(evt) {
   }
   instance = basicLightbox.create(`
     <img src="${evt.target.dataset.source}" >
-`)
-
-  instance.show((instance) => console.log('finished show()', instance))
+`,
+    {
+      onShow: instance => {
+        window.addEventListener('keydown', escapeKeydown);
+      },
+      onClose: instance => {
+        window.removeEventListener('keydown', escapeKeydown);
+      },
+    }
+  );
+  instance.show((instance) => console.log('finished show()', instance));
 
   // setTimeout(() => {
   //   instance.close((instance) => console.log('finished close()', instance))
   // }, 3000);
-
-  const esc = 'Escape';
-  if (evt.code === esc) {
-    instance.close()
-  }
 }
 
 gallery.addEventListener('click', clickImg);
-
-window.addEventListener('keydown', escapeKeydown);
 
 function escapeKeydown(event) {
   const esc = 'Escape';
